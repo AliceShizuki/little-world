@@ -1,0 +1,850 @@
+/* ------------------------------------------------------------------
+   所有动画关键帧
+   原则：尽量只动 transform / opacity，避免触发布局重排
+   ------------------------------------------------------------------ */
+
+/* ---------- 太阳 / 月亮 ---------- */
+@keyframes blinkEyes {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  45%,
+  55% {
+    transform: scaleY(0.08);
+  }
+}
+
+.anim-blink {
+  animation: blinkEyes 0.42s ease-in-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes sunSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  35% {
+    transform: rotate(14deg) scale(1.03);
+  }
+  70% {
+    transform: rotate(-9deg) scale(1.01);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.anim-sun-spin {
+  animation: sunSpin 2.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes sunBurst {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.anim-sun-burst circle {
+  animation: sunBurst 1.3s ease-out forwards;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes moonWake {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  40% {
+    transform: rotate(10deg) scale(1.12);
+  }
+  100% {
+    transform: rotate(0) scale(1);
+  }
+}
+
+.anim-moon-wake {
+  animation: moonWake 1s ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes sunHalo {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.sun-halo {
+  animation: sunHalo 6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---------- 星星 ---------- */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scale(0.86);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.star {
+  animation-name: twinkle;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---------- 云 ---------- */
+@keyframes cloudDrift {
+  0% {
+    transform: translateX(-16px) translateY(0);
+  }
+  100% {
+    transform: translateX(20px) translateY(-5px);
+  }
+}
+
+.cloud-drift {
+  animation-name: cloudDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes cloudPuff {
+  0% {
+    transform: scale(1, 1);
+  }
+  35% {
+    transform: scale(1.1, 0.88);
+  }
+  65% {
+    transform: scale(0.95, 1.06);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.anim-cloud-puff {
+  animation: cloudPuff 0.75s ease-in-out;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+/* ---------- 雨 ---------- */
+@keyframes rainFall {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(var(--rain-travel, 900px));
+  }
+}
+
+.rain-drop {
+  animation-name: rainFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes splashRipple {
+  0% {
+    transform: scale(0.25);
+    opacity: 0.85;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.rain-splash {
+  animation-name: splashRipple;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.rain-layer {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.rain-layer.on {
+  opacity: 1;
+}
+
+.rain-layer:not(.on) .rain-drop,
+.rain-layer:not(.on) .rain-splash {
+  animation-play-state: paused;
+}
+
+/* ---------- 树 ---------- */
+@keyframes treeShake {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(1.8deg);
+  }
+  45% {
+    transform: rotate(-1.6deg);
+  }
+  70% {
+    transform: rotate(1deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.anim-tree-shake {
+  animation: treeShake 0.95s ease-in-out;
+  transform-box: fill-box;
+  transform-origin: 50% 92%;
+}
+
+@keyframes leafFall {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx, 40px), var(--dy, 140px)) rotate(200deg);
+    opacity: 0;
+  }
+}
+
+.falling-leaf {
+  animation-name: leafFall;
+  animation-duration: 2.8s;
+  animation-timing-function: cubic-bezier(0.4, 0.1, 0.7, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes willowSway {
+  0% {
+    transform: rotate(-1.6deg);
+  }
+  100% {
+    transform: rotate(1.8deg);
+  }
+}
+
+.willow-strand {
+  animation: willowSway 5s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+
+@keyframes reedSway {
+  0% {
+    transform: rotate(-3deg);
+  }
+  100% {
+    transform: rotate(4deg);
+  }
+}
+
+.reed {
+  animation: reedSway 4.2s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+/* ---------- 花 ---------- */
+.petals {
+  transition: transform 0.6s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+
+@keyframes flowerNod {
+  0% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-6deg);
+  }
+  60% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.anim-flower-nod {
+  animation: flowerNod 0.9s ease-in-out;
+}
+
+.flower-head {
+  cursor: pointer;
+}
+
+/* ---------- 兔子 ---------- */
+@keyframes rabbitHop {
+  0% {
+    transform: translateY(0) scale(1, 1);
+  }
+  18% {
+    transform: translateY(3px) scale(1.08, 0.88);
+  }
+  50% {
+    transform: translateY(-34px) scale(0.94, 1.08);
+  }
+  78% {
+    transform: translateY(0) scale(1.08, 0.9);
+  }
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+}
+
+.anim-rabbit-hop {
+  animation: rabbitHop 0.9s cubic-bezier(0.3, 0.9, 0.4, 1);
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+@keyframes rabbitBlink {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  45%,
+  55% {
+    transform: scaleY(0.1);
+  }
+}
+
+.anim-rabbit-blink {
+  animation: rabbitBlink 0.4s ease-in-out;
+}
+
+@keyframes rabbitEars {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-13deg);
+  }
+  50% {
+    transform: rotate(9deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.anim-rabbit-ears {
+  animation: rabbitEars 0.9s ease-in-out;
+  transform-box: fill-box;
+  transform-origin: 50% 85%;
+}
+
+@keyframes rabbitLook {
+  0% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-9deg);
+  }
+  65% {
+    transform: rotate(7deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.anim-rabbit-look {
+  animation: rabbitLook 1.1s ease-in-out;
+  transform-box: fill-box;
+  transform-origin: 40% 90%;
+}
+
+@keyframes rabbitEat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(5px) rotate(4deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(5px) rotate(3deg);
+  }
+}
+
+.anim-rabbit-eat {
+  animation: rabbitEat 0.55s ease-in-out 2;
+  transform-box: fill-box;
+  transform-origin: 40% 90%;
+}
+
+@keyframes rabbitHeart {
+  0% {
+    transform: translate(30px, -100px) scale(0.4);
+    opacity: 0;
+  }
+  40% {
+    transform: translate(30px, -112px) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(34px, -132px) scale(0.85);
+    opacity: 0;
+  }
+}
+
+.rabbit-heart {
+  animation: rabbitHeart 1.4s ease-out forwards;
+}
+
+@keyframes rabbitZzz {
+  0% {
+    opacity: 0;
+    transform: translate(30px, -100px) scale(0.8);
+  }
+  40% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(38px, -126px) scale(1.1);
+  }
+}
+
+.rabbit-zzz {
+  animation: rabbitZzz 3s ease-out infinite;
+}
+
+/* ---------- 小鸟 ---------- */
+@keyframes birdFlap {
+  0%,
+  100% {
+    transform: rotate(0deg) scaleY(1);
+  }
+  50% {
+    transform: rotate(-22deg) scaleY(0.7);
+  }
+}
+
+.anim-bird-flap {
+  animation: birdFlap 0.42s ease-in-out 2;
+  transform-box: fill-box;
+  transform-origin: 70% 50%;
+}
+
+.anim-bird-fly {
+  animation: birdFlap 0.22s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 70% 50%;
+}
+
+@keyframes birdLook {
+  0% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-7deg);
+  }
+  70% {
+    transform: rotate(6deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.anim-bird-look {
+  animation: birdLook 1.6s ease-in-out;
+}
+
+/* ---------- 蝴蝶 ---------- */
+@keyframes wingFlap {
+  0% {
+    transform: scaleX(1) rotate(0deg);
+  }
+  100% {
+    transform: scaleX(0.45) rotate(-6deg);
+  }
+}
+
+.wing {
+  animation: wingFlap 0.5s ease-in-out infinite alternate;
+}
+
+/* ---------- 青蛙 ---------- */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.035);
+  }
+}
+
+.frog-breathe {
+  animation: breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes frogBlink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+
+.frog-blink {
+  animation: frogBlink 5.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.frog-away {
+  pointer-events: none;
+}
+
+/* ---------- 小船 ---------- */
+@keyframes boatBob {
+  0%,
+  100% {
+    transform: translateY(-1.6px) rotate(-1.2deg);
+  }
+  50% {
+    transform: translateY(1.8px) rotate(1.2deg);
+  }
+}
+
+.boat-bob {
+  animation: boatBob 3.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+@keyframes boatRock {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+  75% {
+    transform: rotate(-2deg);
+  }
+}
+
+.anim-boat-rock {
+  animation: boatRock 1.3s ease-in-out;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+/* ---------- 种子 / 种植 ---------- */
+@keyframes seedBob {
+  0%,
+  100% {
+    transform: translateY(-1.5px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+.seed-bob {
+  animation: seedBob 2.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes haloPulse {
+  0%,
+  100% {
+    transform: scale(0.85);
+    opacity: 0.16;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.32;
+  }
+}
+
+.seed-halo {
+  animation: haloPulse 2.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes hintBob {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.water-hint {
+  animation: hintBob 2.2s ease-in-out infinite;
+}
+
+@keyframes waterDrop {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(30px) scale(1);
+    opacity: 0;
+  }
+}
+
+.water-drop {
+  animation: waterDrop 0.9s ease-in forwards;
+}
+
+@keyframes plantGrow {
+  0% {
+    transform: scale(0.5, 0.7);
+  }
+  60% {
+    transform: scale(1.08, 1.06);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.anim-plant-grow {
+  animation: plantGrow 0.9s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes plantWiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-7deg);
+  }
+  65% {
+    transform: rotate(6deg);
+  }
+}
+
+.anim-plant-wiggle {
+  animation: plantWiggle 0.7s ease-in-out;
+}
+
+/* ---------- 屋内炊烟 ---------- */
+@keyframes smokeRise {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(-14px, -70px) scale(2);
+    opacity: 0;
+  }
+}
+
+.smoke-puff {
+  animation: smokeRise 3.4s ease-out forwards;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---------- 河面 ---------- */
+@keyframes waterFlow {
+  0% {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(110px);
+    opacity: 0;
+  }
+}
+
+.water-flow {
+  animation-name: waterFlow;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rippleOut {
+  0% {
+    transform: scale(0.25);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  animation: rippleOut 1.7s ease-out forwards;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ripple-2 {
+  animation-delay: 0.18s;
+}
+
+/* ---------- 小石子 / 果实 ---------- */
+@keyframes popIn {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.stone-pop {
+  animation: popIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1) both;
+}
+
+@keyframes fruitBounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  30% {
+    transform: translateY(0) scale(1.1, 0.85);
+  }
+  55% {
+    transform: translateY(-8px) scale(0.94, 1.06);
+  }
+}
+
+.anim-fruit-bounce {
+  animation: fruitBounce 0.55s ease-out;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+/* ---------- 门 ---------- */
+.door-leaf {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transition: transform 0.85s cubic-bezier(0.45, 0.05, 0.25, 1);
+}
+
+/* ---------- UI 动画 ---------- */
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hintIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes hintFloat {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -5px);
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "little-world",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Little World · 小小世界 V2 — 八个区域的儿童自由探索开放世界",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:single": "tsc -b && vite build --config vite.single.config.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc -b --pretty false",
+    "test": "node scripts/v3test.mjs",
+    "test:touch": "node scripts/v3touch.mjs",
+    "test:single": "node scripts/check-single.mjs",
+    "shots": "node scripts/v3final.mjs",
+    "test:forest": "node scripts/v3forest.mjs",
+    "shots:forest": "node scripts/v3forest-shots.mjs",
+    "test:eco": "node scripts/v3eco.mjs",
+    "test:regions": "node scripts/v3regions.mjs",
+    "test:clock": "node scripts/v3clock.mjs",
+    "test:layout": "node scripts/check-layout.mjs",
+    "test:sense": "node scripts/v3sense.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "puppeteer-core": "^25.16.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vite-plugin-singlefile": "^2.3.4"
+  }
+}

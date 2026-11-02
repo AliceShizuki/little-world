@@ -1,0 +1,9 @@
+node_modules
+dist
+standalone
+.shots
+tsconfig.tsbuildinfo
+*.local
+.DS_Store
+vite.config.ts.timestamp-*.mjs
+.workbuddy

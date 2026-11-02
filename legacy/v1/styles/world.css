@@ -1,0 +1,354 @@
+/* ------------------------------------------------------------------
+   UI 层：声音控制、家长设置、提示
+   风格保持圆润、低对比，避免抢走画面的注意力
+   ------------------------------------------------------------------ */
+
+/* ---------- 声音控制 ---------- */
+.sound-control {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top, 14px));
+  right: max(14px, env(safe-area-inset-right, 14px));
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  gap: 2px;
+  border-radius: 999px;
+  background: rgba(255, 253, 247, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 20px rgba(110, 95, 75, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.3s ease;
+}
+
+.sound-btn {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #7c6a58;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.sound-btn:active {
+  transform: scale(0.92);
+  background: rgba(226, 160, 106, 0.18);
+}
+
+.sound-control.muted .sound-btn {
+  color: #a99a8b;
+}
+
+.sound-slider {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.32s ease, padding 0.32s ease;
+}
+
+.sound-control.open .sound-slider,
+.sound-control:hover .sound-slider {
+  width: 92px;
+  padding-left: 8px;
+}
+
+/* ---------- 通用 range 样式 ---------- */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(150, 130, 110, 0.28);
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: #e8b78d;
+  border: 2px solid #fffaf2;
+  box-shadow: 0 2px 5px rgba(120, 95, 70, 0.28);
+}
+
+input[type='range']::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(150, 130, 110, 0.28);
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e8b78d;
+  border: 2px solid #fffaf2;
+}
+
+/* ---------- 家长设置入口（长按） ---------- */
+.gear-btn {
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right, 14px));
+  bottom: max(14px, env(safe-area-inset-bottom, 14px));
+  z-index: 20;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #6f5f50;
+  background: rgba(255, 253, 247, 0.32);
+  opacity: 0.55;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  touch-action: none;
+}
+
+.gear-btn:hover {
+  opacity: 0.9;
+}
+
+.gear-btn:active {
+  transform: scale(0.94);
+}
+
+.hold-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(#e2a06a calc(var(--hold-progress, 0) * 360deg), rgba(226, 160, 106, 0) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  pointer-events: none;
+}
+
+/* ---------- 设置面板 ---------- */
+.panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(70, 60, 50, 0.24);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: backdropIn 0.25s ease;
+}
+
+.panel {
+  width: min(430px, 94vw);
+  max-height: 84vh;
+  overflow: auto;
+  border-radius: 22px;
+  background: var(--paper);
+  box-shadow: 0 24px 60px rgba(70, 55, 40, 0.22);
+  animation: panelIn 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  -webkit-overflow-scrolling: touch;
+}
+
+.panel header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 10px;
+  background: var(--paper);
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.panel .close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #9b8a7b;
+  background: rgba(150, 130, 110, 0.1);
+  font-size: 13px;
+}
+
+.panel-body {
+  padding: 0 20px 20px;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.panel section {
+  padding: 12px 0;
+  border-top: 1px dashed rgba(150, 130, 110, 0.22);
+}
+
+.panel section:first-child {
+  border-top: none;
+}
+
+.panel .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 6px 0;
+}
+
+.panel .row input[type='range'] {
+  width: 150px;
+}
+
+.panel .label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.switch {
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(150, 130, 110, 0.25);
+  padding: 3px;
+  transition: background 0.25s ease;
+}
+
+.switch span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fffdf7;
+  box-shadow: 0 1px 3px rgba(100, 80, 60, 0.25);
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.switch.on {
+  background: #e5b48d;
+}
+
+.switch.on span {
+  transform: translateX(20px);
+}
+
+.segments {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: rgba(150, 130, 110, 0.1);
+}
+
+.segments button {
+  padding: 9px 0;
+  border-radius: 11px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.segments button.active {
+  background: #fffdf7;
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(120, 100, 80, 0.14);
+}
+
+.tips {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #7b6a5b;
+}
+
+.ghost {
+  padding: 9px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #7b6a5b;
+  background: rgba(150, 130, 110, 0.1);
+}
+
+.ghost.wide {
+  width: 100%;
+}
+
+.danger {
+  padding: 9px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #fff;
+  background: #d98b7a;
+}
+
+.confirm p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #a1705f;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.footnote {
+  margin: 14px 0 0;
+  font-size: 11px;
+  text-align: center;
+  color: #b0a191;
+}
+
+/* ---------- 首次提示 ---------- */
+.hint {
+  position: fixed;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  z-index: 15;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: #6d5c4c;
+  background: rgba(255, 253, 247, 0.78);
+  box-shadow: 0 8px 20px rgba(110, 95, 75, 0.14);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: hintIn 0.9s ease both, hintFloat 3.4s ease-in-out 0.9s infinite;
+}
+
+@media (max-width: 520px) {
+  .hint {
+    font-size: 12.5px;
+    padding: 7px 15px;
+    bottom: 24%;
+    white-space: nowrap;
+  }
+  .sound-control {
+    padding: 3px;
+  }
+  .sound-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .gear-btn {
+    width: 32px;
+    height: 32px;
+  }
+}
