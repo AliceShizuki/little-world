@@ -377,6 +377,26 @@ body {
   opacity: 0.55;
 }
 
+/* 家长入口的齿轮按钮与下方的提示文字 */
+.v3-gear-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.v3-gear-hint {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 5px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: #7a6553;
+  white-space: nowrap;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
 /* 左右翻页箭头：贴在画面边缘，像书的页边，而不是工具栏上的按钮 */
 .v3-flip {
   position: absolute;

@@ -1,7 +1,28 @@
 import type { SceneProps } from '../art';
 
+/**
+ * 小屋挂钟的指针（动态覆盖层）。
+ *
+ * 挂钟指针跟着世界时钟走，是"高频动态"内容——光栅化背景会把它冻结成静态位图。
+ * 所以指针从 HomeScene 里抽出来，由 Stage 在光栅化背景之上单独渲染（同一位图坐标），
+ * 表盘（静态圆盘与刻度）仍留在 HomeScene 里进背景。
+ */
+export function HomeClockHands({ clock }: { clock: number }) {
+  const c = clock ?? 0.3;
+  const hourAngle = ((c * 24) % 12) * 30;
+  const minuteAngle = ((c * 24 * 60) % 60) * 6;
+  return (
+    <g transform="translate(288 316)" pointerEvents="none">
+      {/* 时针短、分针长：分得清才有"时间在走"的感觉 */}
+      <line x1={0} y1={0} x2={0} y2={-21} stroke="#7a6553" strokeWidth={5.2} strokeLinecap="round" transform={`rotate(${hourAngle})`} />
+      <line x1={0} y1={0} x2={0} y2={-31} stroke="#a8814f" strokeWidth={3.2} strokeLinecap="round" transform={`rotate(${minuteAngle})`} />
+      <circle r={4} fill="#b98b62" />
+    </g>
+  );
+}
+
 /** 小屋：室内。墙、地板、窗、灶台，东西可以随便摆 */
-export function HomeScene({ view, phase, weather, season, night, eco }: SceneProps) {
+export function HomeScene({ view, phase, weather, season, night }: SceneProps) {
   const wall = '#f7ecdc';
   const wallShade = '#efe0c8';
   const floor = '#c9a06a';
@@ -24,15 +45,6 @@ export function HomeScene({ view, phase, weather, season, night, eco }: ScenePro
 
   const x0 = view.x - 200;
   const w = view.w + 400;
-  /**
-   * 挂钟：指针跟着世界时钟走。
-   *
-   * 世界的时间一直是"看不见的"——只有家长面板里才有数字。挂到墙上以后，
-   * 孩子抬头就知道"天快黑了"，而且他会发现指针自己会动。
-   */
-  const clock = eco?.clock ?? 0.3;
-  const hourAngle = ((clock * 24) % 12) * 30;
-  const minuteAngle = ((clock * 24 * 60) % 60) * 6;
 
   return (
     <g>
@@ -44,7 +56,7 @@ export function HomeScene({ view, phase, weather, season, night, eco }: ScenePro
         ))}
       </g>
 
-      {/* 墙上的挂钟：指针跟世界时钟一起走 */}
+      {/* 墙上的挂钟表盘（指针由 Stage 动态覆盖，见 HomeClockHands） */}
       <g transform="translate(288 316)" pointerEvents="none">
         <circle r={47} fill="#fffaf0" stroke="#c9a06a" strokeWidth={7} />
         <circle r={39} fill="none" stroke="#e6d3b8" strokeWidth={1.6} />
@@ -52,10 +64,6 @@ export function HomeScene({ view, phase, weather, season, night, eco }: ScenePro
           const a = (i * Math.PI) / 2;
           return <circle key={i} cx={Math.sin(a) * 28} cy={-Math.cos(a) * 28} r={2.6} fill="#c1a07a" />;
         })}
-        {/* 时针短、分针长：分得清才有"时间在走"的感觉 */}
-        <line x1={0} y1={0} x2={0} y2={-21} stroke="#7a6553" strokeWidth={5.2} strokeLinecap="round" transform={`rotate(${hourAngle})`} />
-        <line x1={0} y1={0} x2={0} y2={-31} stroke="#a8814f" strokeWidth={3.2} strokeLinecap="round" transform={`rotate(${minuteAngle})`} />
-        <circle r={4} fill="#b98b62" />
       </g>
 
       {/* 窗：外面的天色跟着昼夜变 */}

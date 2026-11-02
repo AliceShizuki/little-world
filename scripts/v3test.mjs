@@ -500,6 +500,9 @@ if (panelOpen) {
 }
 
 /* ── 5. 刷新后恢复 ── */
+// 前面植物测试开了 4 倍速，存档恢复要在世界静止下测——否则 reload 期间
+// 昼夜会跨天、天气会重掷、实体会漂移，测的不是"恢复"而是"时钟在跑"。
+await setSpeed(0);
 const beforeReload = await save();
 await page.reload({ waitUntil: 'networkidle0' });
 await sleep(1500);

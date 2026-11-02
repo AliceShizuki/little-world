@@ -117,19 +117,22 @@ export function Hud({ onMap }: { onMap: () => void }) {
             )}
           </button>
 
-          <button
-            className="v3-round v3-gear"
-            onPointerDown={startHold}
-            onPointerUp={endHold}
-            onPointerLeave={endHold}
-            onPointerCancel={endHold}
-            aria-label="家长设置（长按）"
-          >
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">
-              <circle cx="12" cy="12" r="3.4" />
-              <path d="M 12 3 L 12 6 M 12 18 L 12 21 M 3 12 L 6 12 M 18 12 L 21 12 M 5.6 5.6 L 7.8 7.8 M 16.2 16.2 L 18.4 18.4 M 18.4 5.6 L 16.2 7.8 M 7.8 16.2 L 5.6 18.4" />
-            </svg>
-          </button>
+          <div className="v3-gear-wrap">
+            <button
+              className="v3-round v3-gear"
+              onPointerDown={startHold}
+              onPointerUp={endHold}
+              onPointerLeave={endHold}
+              onPointerCancel={endHold}
+              aria-label="家长设置（长按）"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">
+                <circle cx="12" cy="12" r="3.4" />
+                <path d="M 12 3 L 12 6 M 12 18 L 12 21 M 3 12 L 6 12 M 18 12 L 21 12 M 5.6 5.6 L 7.8 7.8 M 16.2 16.2 L 18.4 18.4 M 18.4 5.6 L 16.2 7.8 M 7.8 16.2 L 5.6 18.4" />
+              </svg>
+            </button>
+            <span className="v3-gear-hint">长按进入设置</span>
+          </div>
         </div>
       </div>
 

@@ -105,7 +105,16 @@ await page.evaluate(() => {
 });
 
 /* ── 1. 会唱歌的石头：五块石头，五个不同的音 ── */
-await mutate(`s.region = 'forest'; s.eco.speed = 0;`);
+// 森林里的动物会到处游荡（青蛙尤其爱往溪边石头凑），一旦挡住石头，
+// 命中会被实体吃掉、敲不响。所以点石头前先把会动的动物挪到远离石头的位置。
+await mutate(`
+  s.region = 'forest'; s.eco.speed = 0;
+  for (const e of s.ents) {
+    if (e.r === 'forest' && ['frog','tadpole','froglet','rabbit','squirrel','hedgehog','fox','deer','bird','butterfly','bee','ladybug','caterpillar','ant','fish','snail','worm'].includes(e.t)) {
+      if (e.x > 800 && e.x < 1120 && e.y > 790 && e.y < 910) { e.x = 200; e.y = 700; }
+    }
+  }
+`);
 await spyAudio();
 const notes = [];
 for (let i = 0; i < 5; i += 1) {

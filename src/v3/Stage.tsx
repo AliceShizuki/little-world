@@ -9,6 +9,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { EntitySprite } from './EntitySprite';
 import { spriteOf } from './sprites';
+import { SceneCanvas, type SceneRasterProps } from './SceneCanvas';
+import { HomeClockHands } from './scenes/HomeScene';
 import { WeatherLayer } from './WeatherLayer';
 import { ForestScene } from './scenes/ForestScene';
 import { BurrowScene } from './scenes/BurrowScene';
@@ -404,7 +406,18 @@ export function Stage() {
       </defs>
 
       <g key={region} className="v3-scene-enter">
-        <Scene view={view} phase={s.phase} weather={s.weather} season={s.season} night={night} eco={eco} />
+        {/* 场景背景：光栅化成位图，替代上万 SVG 节点（手机性能的关键） */}
+        <SceneCanvas
+          view={view}
+          phase={s.phase}
+          weather={s.weather}
+          season={s.season}
+          night={night}
+          eco={eco}
+          renderScene={(p: SceneRasterProps) => Scene({ ...p })}
+        />
+        {/* 小屋挂钟指针：高频动态（随世界时钟走），不能进光栅化背景，单独覆盖渲染 */}
+        {region === 'home' && <HomeClockHands clock={eco.clock} />}
 
         {/* 水面：点一下就是一圈涟漪。放在实体之下，所以拖动物体不受影响 */}
         {water && (
